@@ -1,7 +1,8 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useCallback } from 'react';
 import { LoremIpsum } from 'lorem-ipsum';
 import parse from 'html-react-parser';
-import { FiInbox } from 'react-icons/fi'
+import { FiInbox } from 'react-icons/fi';
+import copy from 'clipboard-copy';
 
 import { Container, Sidebar, Form, Content, ContentHeader, ContentText } from './styles';
 
@@ -10,8 +11,10 @@ import Header from '../../components/Header';
 const Main: React.FC = () => {
   const [lorem, setLorem] = useState('');
   const [paragraphs, setParagraphs] = useState(0);
+  const [generatedParagraphs, setGeneratedParagraphs] = useState(0);
+  const [copyButtonText, setCopyButtonText] = useState('Copiar texto');
 
-  const handleGenerateText = ( event: FormEvent<HTMLFormElement>,) => {
+  const handleGenerateText = useCallback(( event: FormEvent<HTMLFormElement>,) => {
     event.preventDefault();
     const lipsum = new LoremIpsum({
       random: Math.random,
@@ -29,7 +32,13 @@ const Main: React.FC = () => {
 
     setLorem(generatedText);
 
+    setGeneratedParagraphs(paragraphs);
     setParagraphs(0);
+  }, [paragraphs]);
+
+  const handleCopyToClipboard = () => {
+    copy(lorem);
+    setCopyButtonText('Copiado!');
   }
 
   return (
@@ -39,7 +48,8 @@ const Main: React.FC = () => {
       <Sidebar>
         <p>Configurações do texto</p>
         <Form onSubmit={handleGenerateText}>
-          <input 
+          <input
+            value={!!paragraphs ? paragraphs : ''}
             onChange={(e) => setParagraphs(parseInt(e.target.value))}
             placeholder="Digite a quantidade de parágrafos"
           />
@@ -49,7 +59,10 @@ const Main: React.FC = () => {
       </Sidebar>
       <Content>
         <ContentHeader>
-          <h1>Texto Gerado:</h1>
+          <h1>{!!lorem ? `Gerados ${generatedParagraphs} parágrafos` : 'Configure seu texto ao lado'}</h1>
+          <button onClick={handleCopyToClipboard}>
+            {copyButtonText}
+          </button>
         </ContentHeader>
         <ContentText>
           {lorem ? parse(lorem) : 

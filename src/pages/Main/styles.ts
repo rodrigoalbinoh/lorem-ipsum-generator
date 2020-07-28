@@ -63,17 +63,30 @@ export const Content = styled.div`
 `;
 
 export const ContentHeader = styled.div`
-padding: 20px 40px;
+    padding: 20px 40px;
     background: #ccc;
     height: 20vh;
     max-height: 117px;
     display: flex;
     align-items: flex-end;
+    justify-content: space-between;
 
     h1 {
       font-family: Roboto, sans-serif;
       font-weight: 300;
       font-size: 35px;
+    }
+
+    button{
+      background: #0072ac;
+      color: #f2f2f2;
+      border: 0;
+      font-size: 16px;
+      padding: 10px 15px;
+
+      &:hover {
+        background: ${shade(0.1, '#0072ac')};
+      }
     }
 `;
 
