@@ -23,6 +23,7 @@ import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { Footer } from "../components/Footer";
 import { useForm } from "react-hook-form";
 import { useMemo } from "react";
+import Head from "next/head";
 
 const Index = () => {
   const [lorem, setLorem] = useState("");
@@ -44,6 +45,9 @@ const Index = () => {
 
   return (
     <Container pt="5rem">
+      <Head>
+        <title>Lorem Ipsum Generator</title>
+      </Head>
       <Hero title="Lorem Ipsum Generator" description="Insira a quantidade de parágrafos desejada e gere o texto. Você poderá utilizá-lo onde desejar." />
       <Main>
         <form onSubmit={handleSubmit(onSubmit)}>
